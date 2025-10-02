@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import java.util.ArrayList;
 public class NumberTriangleTest {
 
     // this is testing that aliasing exists between

@@ -1,5 +1,5 @@
 import java.io.*;
-
+import java.util.ArrayList;
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
  *
@@ -114,22 +114,38 @@ public class NumberTriangle {
         // are more convenient to work with when reading the file contents.
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-
-        // TODO define any variables that you want to use to store things
-
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
         NumberTriangle top = null;
-
+        ArrayList<NumberTriangle> prev = new ArrayList<>();
+        ArrayList<NumberTriangle> cur = new ArrayList<>();
+        String[] nums;
         String line = br.readLine();
         while (line != null) {
 
             // remove when done; this line is included so running starter code prints the contents of the file
             System.out.println(line);
 
-            // TODO process the line
-
+            nums = line.split(" ");
+            if (nums.length == 1 && prev.isEmpty()) {
+                top = new NumberTriangle(Integer.parseUnsignedInt(nums[0]));
+                prev.add(top);
+                line = br.readLine();
+                continue;
+            }
+            for (int i = 0; i < prev.size(); i++) {
+                NumberTriangle nt = prev.get(i);
+                if (i == 0) {
+                    nt.setLeft(new NumberTriangle(Integer.parseUnsignedInt(nums[i])));
+                    cur.add(nt.left);
+                }
+                else
+                    nt.setLeft(cur.get(i - 1));
+                nt.setRight(new NumberTriangle(Integer.parseUnsignedInt(nums[i + 1])));
+                cur.add(nt.right);
+            }
+            prev = cur;
+            cur.clear();
             //read the next line
             line = br.readLine();
         }
