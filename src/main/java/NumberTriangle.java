@@ -95,7 +95,7 @@ public class NumberTriangle {
             else
                 cur = cur.right;
         }
-        return cur.root;
+        return cur.getRoot();
     }
 
     /** Read in the NumberTriangle structure from a file.
@@ -118,14 +118,9 @@ public class NumberTriangle {
         // so might want a variable for that.
         NumberTriangle top = null;
         ArrayList<NumberTriangle> prev = new ArrayList<>();
-        ArrayList<NumberTriangle> cur = new ArrayList<>();
         String[] nums;
         String line = br.readLine();
         while (line != null) {
-
-            // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
-
             nums = line.split(" ");
             if (nums.length == 1 && prev.isEmpty()) {
                 top = new NumberTriangle(Integer.parseUnsignedInt(nums[0]));
@@ -133,19 +128,17 @@ public class NumberTriangle {
                 line = br.readLine();
                 continue;
             }
-            for (int i = 0; i < prev.size(); i++) {
-                NumberTriangle nt = prev.get(i);
+            for (int i = 0; i < (nums.length - 1); i++) {
+                NumberTriangle nt = prev.remove(0);
                 if (i == 0) {
                     nt.setLeft(new NumberTriangle(Integer.parseUnsignedInt(nums[i])));
-                    cur.add(nt.left);
+                    prev.add(nt.left);
                 }
                 else
-                    nt.setLeft(cur.get(i - 1));
+                    nt.setLeft(prev.get(prev.size() - 1));
                 nt.setRight(new NumberTriangle(Integer.parseUnsignedInt(nums[i + 1])));
-                cur.add(nt.right);
+                prev.add(nt.right);
             }
-            prev = cur;
-            cur.clear();
             //read the next line
             line = br.readLine();
         }
@@ -160,7 +153,7 @@ public class NumberTriangle {
         // [not for credit]
         // you can implement NumberTriangle's maxPathSum method if you want to try to solve
         // Problem 18 from project Euler [not for credit]
-        mt.maxSumPath();
-        System.out.println(mt.getRoot());
+//        mt.maxSumPath();
+//        System.out.println(mt.getRoot());
     }
 }
